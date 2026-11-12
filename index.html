@@ -50,7 +50,7 @@ header { display: flex; flex-direction: column; gap: 10px; }
 .live { display: inline-flex; align-items: center; gap: 6px; font-family: var(--display); font-size: 13px; color: var(--ember); margin-left: 10px; vertical-align: middle; }
 .live::before { content: ""; width: 8px; height: 8px; background: var(--ember); border-radius: 50%; animation: blink 1.2s infinite; }
 @keyframes blink { 50% { opacity: .2; } }
-.pin { position: absolute; transform: translate(-50%, -100%); background: none; border: 0; padding: 0; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.pin { position: absolute; transform: translate(-50%, -100%) scale(var(--iz, 1)); transform-origin: 50% 100%; background: none; border: 0; padding: 0; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; }
 .pin span { font-family: var(--display); font-size: 13px; background: rgba(12,19,16,0.85); color: var(--bone); border: 1px solid var(--moss); padding: 1px 6px; border-radius: 3px; white-space: nowrap; }
 .pin i { width: 10px; height: 10px; background: var(--ember); border: 2px solid #000; transform: rotate(45deg); }
 .pin.on span { border-color: var(--ember); color: var(--ember); }
@@ -103,32 +103,135 @@ header { display: flex; flex-direction: column; gap: 10px; }
 .chron .day { font-family: var(--display); color: var(--ember); font-size: 16px; }
 footer { font-size: 14px; color: var(--ash); }
 @media (prefers-reduced-motion: reduce) { .pin.on i { animation: none; } .layer { transition: none !important; } }
+
+/* ---- breites Layout, Kopfleiste, Ladebildschirm ---- */
+html { scroll-behavior: smooth; }
+body { background: radial-gradient(1200px 600px at 50% -200px, rgba(255,154,60,0.10), transparent 70%), var(--night); min-height: 100vh; }
+.wrap { max-width: 1240px; gap: 44px; padding-block: 24px 64px; }
+section[id] { scroll-margin-top: 84px; }
+.top { display: block; position: sticky; top: 0; z-index: 20; background: rgba(12,19,16,0.88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 2px solid var(--moss); }
+.top-in { max-width: 1240px; margin: 0 auto; padding: 10px max(16px, env(safe-area-inset-left, 0px)); display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--bone); text-decoration: none; margin-right: auto; min-width: 0; }
+.brand b { font-family: var(--display); font-size: 20px; letter-spacing: .04em; display: block; line-height: 1.1; }
+.brand small { display: block; color: var(--ash); font-size: 13px; }
+.brand-ico { width: 36px; height: 36px; display: grid; place-items: center; background: var(--ember); color: #1b0e04; border-radius: 6px; font-size: 22px; font-weight: 700; box-shadow: 0 0 18px rgba(255,154,60,.45); flex: none; }
+.counters { display: flex; gap: 8px; }
+.counters span { font-family: var(--display); font-size: 14px; color: var(--ash); padding: 4px 10px; border: 2px solid var(--moss); border-radius: 6px; background: var(--pine); white-space: nowrap; }
+.counters b { color: var(--gold); font-size: 16px; }
+.nav { display: flex; gap: 4px; }
+.nav a { font-family: var(--display); font-size: 15px; color: var(--bone); text-decoration: none; padding: 6px 10px; border-radius: 6px; }
+.nav a:hover, .nav a:focus-visible { background: var(--pine); outline: none; color: var(--ember); }
+.nav a.cta { background: var(--ember); color: #1b0e04; }
+.nav a.cta:hover { background: var(--gold); color: #1b0e04; }
+@media (max-width: 720px) { .top-in { gap: 8px; } .nav { width: 100%; justify-content: space-between; } .counters { display: none; } .brand b { font-size: 17px; } }
+
+.hero { text-align: center; align-items: center; display: flex; flex-direction: column; gap: 12px; padding-top: 12px; }
+.hero h1 { font-size: clamp(40px, 8vw, 76px); }
+.hero .lede { max-width: 46ch; margin: 0 auto; }
+.hero .handle { align-self: center; }
+
+.grid { display: grid; gap: 28px; }
+@media (min-width: 900px) {
+  .grid { grid-template-columns: minmax(0, 1.2fr) minmax(340px, 1fr); align-items: start; }
+  .mapcol { position: sticky; top: 76px; }
+  .roster { max-height: 430px; overflow: auto; padding-right: 4px; scrollbar-color: var(--moss) transparent; }
+  .steps { display: grid !important; grid-template-columns: repeat(3, 1fr); }
+  .steps li { background: var(--pine); border: 2px solid var(--moss); border-radius: 8px; padding: 14px; }
+  .jobs { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+}
+.mapbox { width: min(100%, calc((100vh - 170px) * 9 / 13)); min-width: min(100%, 300px); margin: 0 auto; box-shadow: 0 20px 60px rgba(0,0,0,.5), 0 0 0 1px #000; }
+.mapcol h2, .mapcol .hint { text-align: center; }
+.side { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.panel { background: rgba(21,33,27,0.6); border: 2px solid var(--moss); border-radius: 10px; padding: 16px; }
+.panel h2 { font-size: 22px; }
+.small { font-size: 14px; margin: 6px 0 10px; min-height: 1em; }
+.find { display: flex; align-items: center; gap: 8px; background: var(--night); border: 2px solid var(--moss); border-radius: 6px; padding: 0 12px; }
+.find:focus-within { border-color: var(--ember); }
+.find span { color: var(--ash); font-size: 20px; }
+.find input { flex: 1; min-width: 0; background: none; border: 0; color: var(--bone); font: inherit; padding: 10px 0; outline: none; }
+.vil[hidden] { display: none; }
+.voting .votq { margin-top: 0; }
+@media (max-width: 420px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+#loader { position: fixed; inset: 0; z-index: 100; background: var(--night); display: grid; place-items: center; transition: opacity .6s ease, visibility .6s; }
+#loader.done { opacity: 0; visibility: hidden; }
+.ld-in { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 24px; text-align: center; }
+.ld-title { font-family: var(--display); font-weight: 700; font-size: clamp(30px, 8vw, 52px); color: var(--bone); text-shadow: 0 3px 0 #000, 0 0 24px rgba(255,154,60,.4); letter-spacing: .04em; }
+.ld-text { font-family: var(--display); color: var(--ember); font-size: 16px; letter-spacing: .14em; min-height: 1.4em; }
+.ld-text b { animation: blink 0.9s steps(1) infinite; }
+.ld-bar { width: min(280px, 70vw); height: 12px; border: 2px solid var(--moss); background: var(--pine); padding: 2px; }
+.ld-bar span { display: block; height: 100%; width: 0; background: repeating-linear-gradient(90deg, var(--ember) 0 10px, var(--gold) 10px 12px); transition: width .25s steps(6); }
+.ld-fire { position: relative; width: 48px; height: 56px; }
+.ld-fire i { position: absolute; bottom: 0; width: 12px; height: 12px; background: var(--ember); animation: flick 0.6s steps(2) infinite; }
+.ld-fire i:nth-child(1) { left: 0; height: 20px; animation-delay: .1s; }
+.ld-fire i:nth-child(2) { left: 12px; height: 40px; background: var(--gold); }
+.ld-fire i:nth-child(3) { left: 24px; height: 52px; animation-delay: .25s; }
+.ld-fire i:nth-child(4) { left: 36px; height: 28px; background: var(--gold); animation-delay: .4s; }
+.ld-fire i:nth-child(5) { left: 12px; bottom: -6px; width: 24px; height: 6px; background: #6b3b1c; animation: none; }
+@keyframes flick { 50% { transform: translateY(-4px) scaleY(1.15); opacity: .8; } }
+@media (prefers-reduced-motion: reduce) { .ld-fire i, .ld-text b { animation: none; } html { scroll-behavior: auto; } }
 </style>
 
-<div class="wrap">
-  <header>
+<div id="loader" role="status" aria-live="polite">
+  <div class="ld-in">
+    <div class="ld-fire" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="ld-title">WIKINGER-INSEL</div>
+    <div class="ld-text"><span id="ldt"></span><b>_</b></div>
+    <div class="ld-bar"><span id="ldbar"></span></div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#dorf"><span class="brand-ico" aria-hidden="true">ᚹ</span><span><b>WIKINGER-INSEL</b><small id="hStatus"></small></span></a>
+    <div class="counters"><span><b id="hRes">–</b> Wikinger</span><span><b id="hGold">–</b> Gold</span></div>
+    <nav class="nav"><a href="#dorf">Dorf</a><a href="#bewohner">Bewohner</a><a href="#chronik">Chronik</a><a href="#mitmachen" class="cta">Mitmachen</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero" id="dorf">
     <span class="tag">Ein Dorf, gebaut von euch</span>
-    <h1>WIKINGER-<br>INSEL</h1>
+    <h1>WIKINGER-INSEL</h1>
     <p class="lede">Nach einer Schlacht stranden Bjarne und Freya auf einer Insel. Jeder, der kommentiert, kommt aus dem Wald und wird Teil des Dorfes.</p>
     <a class="handle" href="https://www.tiktok.com/@inselderwikinger" target="_blank" rel="noopener">@inselderwikinger ↗</a>
-  </header>
-
-  <section aria-label="Stand des Dorfes">
-    <div class="stats" id="stats"></div>
   </section>
 
-  <section>
-    <h2>Die Karte <span class="live">LIVE</span></h2>
-    <div class="mapbox" id="map">
-      <div class="layer" id="layer"><canvas id="mapcv" width="1620" height="2880" role="img" aria-label="Lebendige Pixel-Karte der Insel, rundherum Wald: Langhaus, Lagerfeuer, Truhe, Bjarne und Freya laufen herum, gelbe Augen im Wald"></canvas></div>
-      <div class="ctrl"><button id="zin" aria-label="Hineinzoomen">+</button><button id="zout" aria-label="Herauszoomen">−</button><button id="zhome" aria-label="Ganze Karte zeigen">⌂</button></div>
-    </div>
-    <p class="hint">Ziehen zum Umschauen, Mausrad oder zwei Finger zum Zoomen. Tipp unten auf einen Bewohner, um ihn auf der Karte zu finden.</p>
-  </section>
+  <div class="grid">
+    <section class="mapcol" aria-label="Karte">
+      <h2>Die Karte <span class="live">LIVE</span></h2>
+      <div class="mapbox" id="map">
+        <div class="layer" id="layer"><canvas id="mapcv" width="1620" height="2880" role="img" aria-label="Lebendige Pixel-Karte der Insel, rundherum Wald: Langhaus, Lagerfeuer, Truhe, Bewohner laufen herum, gelbe Augen im Wald"></canvas></div>
+        <div class="ctrl"><button id="zin" aria-label="Hineinzoomen">+</button><button id="zout" aria-label="Herauszoomen">−</button><button id="zhome" aria-label="Zurück zum Dorf">⌂</button></div>
+      </div>
+      <p class="hint">Ziehen zum Umschauen, Mausrad oder zwei Finger zum Zoomen.</p>
+    </section>
 
-  <section>
-    <h2>Die Bewohner</h2>
-    <div class="roster" id="roster"></div>
+    <aside class="side">
+      <div class="stats" id="stats"></div>
+
+      <section id="bewohner" class="panel">
+        <h2>Finde deinen Wikinger</h2>
+        <label class="find"><span aria-hidden="true">⌕</span><input id="find" type="search" placeholder="Deinen Namen eingeben…" autocomplete="off" aria-label="Wikinger suchen"></label>
+        <p class="muted small" id="findInfo"></p>
+        <div class="roster" id="roster"></div>
+      </section>
+
+      <section class="panel voting">
+        <h2>Abstimmung</h2>
+        <p class="votq" id="votq"></p>
+        <div class="vote" id="vote"></div>
+      </section>
+    </aside>
+  </div>
+
+  <section id="mitmachen">
+    <h2>So ziehst du ein</h2>
+    <ol class="steps">
+      <li><p><b>Folge @inselderwikinger.</b> <span class="muted">Jeden Tag gibt es eine neue Folge.</span></p></li>
+      <li><p><b>Kommentier deinen Namen und Beruf.</b> <span class="muted">Zum Beispiel „Kevin, Händler“. In der nächsten Folge kommst du aus dem Wald.</span></p></li>
+      <li><p><b>Stimm mit ab.</b> <span class="muted">Der Kommentar mit den meisten Likes entscheidet, was als Nächstes gebaut wird.</span></p></li>
+    </ol>
   </section>
 
   <section>
@@ -137,30 +240,19 @@ footer { font-size: 14px; color: var(--ash); }
     <div class="villfolk"><img src="data:image/png;base64,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" alt=""><img src="data:image/png;base64,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" alt=""><img src="data:image/png;base64,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" alt=""><span>Ohne Beruf wirst du Dorfbewohner.</span></div>
   </section>
 
-  <section>
-    <h2>So ziehst du ein</h2>
-    <ol class="steps">
-      <li><p><b>Folge @inselderwikinger.</b> <span class="muted">Jeden Tag gibt es eine neue Folge.</span></p></li>
-      <li><p><b>Kommentier deinen Namen und Beruf.</b> <span class="muted">Zum Beispiel „Kevin, Händler“. In der nächsten Folge kommst du aus dem Wald.</span></p></li>
-      <li><p><b>Stimm mit ab.</b> <span class="muted">Der Kommentar mit den meisten Likes entscheidet, was als Nächstes gebaut wird.</span></p></li>
-    </ol>
-    <p class="votq" id="votq"></p>
-    <div class="vote" id="vote"></div>
-  </section>
-
-  <section>
+  <section id="chronik">
     <h2>Die Chronik</h2>
     <div class="chron" id="chron"></div>
   </section>
 
   <footer id="foot"></footer>
-</div>
+</main>
 
 <script>
 // ---- Stand des Dorfes: wird nach jeder Folge aktualisiert ----
 const STATE = {
   updated: "11.11.2026",
-  day: 2, residents: 11, houses: 1, gold: 900,
+  day: 2, residents: 11, houses: 1, gold: 900, nextHouse: 2500,
   // Abstimmung je Tag: wird automatisch passend zu "day" angezeigt
   votes: {
     2: { q: "Was bauen wir als Nächstes?", o: ["Hafen", "Schmiede", "Met-Halle"] },
@@ -218,7 +310,7 @@ function clampView() {
   const W = map.clientWidth, H = map.clientHeight, LW = W * z, LH = layer.offsetHeight * z;
   tx = Math.min(0, Math.max(W - LW, tx)); ty = Math.min(0, Math.max(H - LH, ty));
 }
-function apply(anim) { clampView(); map.classList.toggle("zoomed", z > 1.5); layer.style.transition = anim ? "transform .35s ease" : "none"; layer.style.transform = `translate(${tx}px,${ty}px) scale(${z})`; }
+function apply(anim) { clampView(); map.classList.toggle("zoomed", z > 1.5); layer.style.transition = anim ? "transform .35s ease" : "none"; layer.style.transform = `translate(${tx}px,${ty}px) scale(${z})`; layer.style.setProperty("--iz", Math.min(1, 1.6 / z)); }
 function zoomAt(f, cx, cy, anim) { const nz = Math.min(6, Math.max(1, z * f)); tx = cx - (cx - tx) * nz / z; ty = cy - (cy - ty) * nz / z; z = nz; apply(anim); }
 function home() { z = 1.5; const W = map.clientWidth, H = map.clientHeight, LH = layer.offsetHeight; tx = W / 2 - (900 / 1620) * W * z; ty = H / 2 - (1550 / 2880) * LH * z; apply(true); }
 $("zin").onclick = () => zoomAt(1.5, map.clientWidth / 2, map.clientHeight / 2, true);
@@ -329,7 +421,7 @@ STATE.villagers.forEach(v => {
   const r = el("button", "vil"); const img = el("img"); img.src = SPR[v.sprite]; img.alt = "";
   const mid = el("div"); mid.append(el("b", null, v.name), el("small", null, v.job + " · " + v.note));
   r.append(img, mid, el("span", "chip " + v.status, v.status === "wait" ? "Im Wald" : "Wohnt hier"));
-  r.addEventListener("click", () => { focusOn(v.name); map.scrollIntoView({ behavior: "smooth", block: "center" }); });
+  r.addEventListener("click", () => { focusOn(v.name); if (innerWidth < 900) map.scrollIntoView({ behavior: "smooth", block: "center" }); });
   $("roster").append(r); rowEls[v.name] = r;
 });
 
@@ -345,6 +437,32 @@ $("foot").textContent = "Stand: " + STATE.updated + " · Die Wikinger-Insel ist 
 
 home();
 addEventListener("resize", () => apply(false));
+
+// Kopfleiste
+$("hRes").textContent = STATE.residents; $("hGold").textContent = STATE.gold.toLocaleString("de-DE");
+{ const miss = Math.max(0, Math.ceil((STATE.nextHouse - STATE.gold) / 100));
+  $("hStatus").textContent = "Tag " + STATE.day + " · " + (miss ? "noch " + miss + " Wikinger bis zum nächsten Haus" : "genug Gold für das nächste Haus"); }
+
+// Finde deinen Wikinger
+$("find").addEventListener("input", e => {
+  const q = e.target.value.trim().toLowerCase(); let n = 0;
+  STATE.villagers.forEach(v => { const hit = !q || v.name.toLowerCase().includes(q) || v.job.toLowerCase().includes(q); rowEls[v.name].hidden = !hit; if (hit) n++; });
+  $("findInfo").textContent = !q ? "" : n ? n + (n === 1 ? " Wikinger gefunden. Tippen zeigt ihn auf der Karte." : " Wikinger gefunden.") : "Noch nicht auf der Insel. Kommentier deinen Namen unter der neuesten Folge!";
+  const only = STATE.villagers.filter(v => !rowEls[v.name].hidden); if (q && only.length === 1) focusOn(only[0].name);
+});
+$("find").addEventListener("keydown", e => { if (e.key === "Enter") { const v = STATE.villagers.find(v => !rowEls[v.name].hidden); if (v) focusOn(v.name); } });
+
+// Ladebildschirm
+{ const ld = $("loader"), txt = "FACKELN WERDEN ENTZÜNDET", t0 = performance.now(); let i = 0, ready = false;
+  const tick = setInterval(() => { if (i <= txt.length) $("ldt").textContent = txt.slice(0, i++); }, 55);
+  const bar = p => $("ldbar").style.width = p + "%"; bar(15);
+  const finish = () => { if (ready) return; ready = true; bar(100); const wait = Math.max(0, 1600 - (performance.now() - t0));
+    setTimeout(() => { ld.classList.add("done"); clearInterval(tick); home(); }, wait); };
+  const imgs = [bg, ...Object.values(SPRW).flatMap(o => Object.values(o))]; let done = 0;
+  const check = () => { done = imgs.filter(im => im.complete).length; bar(15 + Math.round(80 * done / imgs.length)); if (done === imgs.length) finish(); };
+  imgs.forEach(im => { if (!im.complete) im.addEventListener("load", check, { once: true }); }); check();
+  setTimeout(finish, 5000); }
+
 </script>
 
 </body></html>
