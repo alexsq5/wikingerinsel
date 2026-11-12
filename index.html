@@ -93,6 +93,8 @@ header { display: flex; flex-direction: column; gap: 10px; }
 .steps li::before { content: counter(s); font-family: var(--display); font-size: 22px; width: 40px; height: 40px; display: grid; place-items: center; background: var(--ember); color: #1b0e04; border-radius: 6px; }
 .steps b { color: var(--bone); }
 .vote { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.votq { margin-top: 14px; font-family: var(--display); color: var(--gold); font-size: 18px; }
+.votq small { display: block; font-family: var(--body); color: var(--ash); font-size: 14px; }
 .vote span { font-family: var(--display); font-size: 15px; padding: 6px 12px; border: 2px dashed var(--gold); color: var(--gold); border-radius: 6px; }
 
 /* chronicle */
@@ -142,6 +144,7 @@ footer { font-size: 14px; color: var(--ash); }
       <li><p><b>Kommentier deinen Namen und Beruf.</b> <span class="muted">Zum Beispiel „Kevin, Händler“. In der nächsten Folge kommst du aus dem Wald.</span></p></li>
       <li><p><b>Stimm mit ab.</b> <span class="muted">Der Kommentar mit den meisten Likes entscheidet, was als Nächstes gebaut wird.</span></p></li>
     </ol>
+    <p class="votq" id="votq"></p>
     <div class="vote" id="vote"></div>
   </section>
 
@@ -158,7 +161,18 @@ footer { font-size: 14px; color: var(--ash); }
 const STATE = {
   updated: "11.11.2026",
   day: 2, residents: 11, houses: 1, gold: 900,
-  vote: ["Hafen", "Schmiede", "Met-Halle"],
+  // Abstimmung je Tag: wird automatisch passend zu "day" angezeigt
+  votes: {
+    2: { q: "Was bauen wir als Nächstes?", o: ["Hafen", "Schmiede", "Met-Halle"] },
+    3: { q: "Was braucht das Dorf zuerst?", o: ["Wachturm", "Feld", "Brunnen"] },
+    4: { q: "Womit verdienen wir Gold?", o: ["Fischerboot", "Viehstall", "Holzlager"] },
+    5: { q: "Was schützt das Dorf?", o: ["Palisade", "Heilerhütte", "Markt"] },
+    6: { q: "Was wird heute gebaut?", o: ["Brauerei", "Jagdhütte", "Werft"] },
+    7: { q: "Wohin gehen die Holzfäller?", o: ["Tiefer in den Wald", "Zum Felsen", "Ans Ufer"] },
+    8: { q: "Was kommt ins Dorfzentrum?", o: ["Mühle", "Arena", "Tempel"] },
+    9: { q: "Wer wird Jarl der Insel?", o: ["Bjarne", "Freya", "Ein Follower"] },
+    10: { q: "Wie feiern wir Tag 10?", o: ["Großes Fest", "Wettkampf", "Neue Insel suchen"] }
+  },
   villagers: [
     { name: "Bjarne", job: "Gründer", sprite: "bjarne", walk: "bjarne", status: "found", note: "Seit Tag 1" },
     { name: "Freya", job: "Gründerin", sprite: "freya", walk: "freya", status: "found", note: "Seit Tag 1" },
@@ -324,7 +338,8 @@ JOBS.forEach(([n, d, s]) => { const j = el("div", "job"); const i = el("img"); i
   const t = el("div"); t.style.minWidth = "0"; t.append(el("b", null, n), el("small", null, d)); j.append(i, t); $("jobs").append(j); });
 
 // vote + chronicle
-STATE.vote.forEach(v => $("vote").append(el("span", null, v + "?")));
+{ const vt = STATE.votes[STATE.day] || STATE.votes[Math.max(...Object.keys(STATE.votes).map(Number).filter(d => d <= STATE.day))];
+  if (vt) { $("votq").append(el("span", null, "Tag " + STATE.day + ": " + vt.q), el("small", null, "Schreib die Zahl in die Kommentare.")); vt.o.forEach((v, i) => $("vote").append(el("span", null, (i + 1) + " = " + v))); } }
 STATE.chronicle.slice().reverse().forEach(c => { const a = el("article"); a.append(el("span", "day", "Tag " + c.day), el("p", null, c.text)); $("chron").append(a); });
 $("foot").textContent = "Stand: " + STATE.updated + " · Die Wikinger-Insel ist eine tägliche Pixel-Art-Serie auf TikTok.";
 
