@@ -1,8 +1,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Wikinger-Insel</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<style>@font-face{font-family:'Pixelify Sans';src:url(fonts/pixelify-700.woff) format('woff');font-weight:500 700;font-display:swap}@font-face{font-family:Carlito;src:url(fonts/carlito-400.woff) format('woff');font-weight:400 500;font-display:swap}@font-face{font-family:Carlito;src:url(fonts/carlito-700.woff) format('woff');font-weight:700;font-display:swap}</style>
 <style>
 /* Layout: one narrow column like a scroll of birch bark at night — map is the centrepiece, everything else hangs off it */
 :root {
@@ -15,7 +14,7 @@
   --gold: #f2c45a;       /* gold / highlights */
   --eye: #ffd84a;
   --display: "Pixelify Sans", "Courier New", monospace;
-  --body: "Alegreya Sans", "Trebuchet MS", system-ui, sans-serif;
+  --body: Carlito, "Trebuchet MS", system-ui, sans-serif;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -101,7 +100,8 @@ header { display: flex; flex-direction: column; gap: 10px; }
 .chron { display: flex; flex-direction: column; gap: 14px; border-left: 3px solid var(--moss); padding-left: 16px; }
 .chron article { display: flex; flex-direction: column; gap: 4px; }
 .chron .day { font-family: var(--display); color: var(--ember); font-size: 16px; }
-footer { font-size: 14px; color: var(--ash); }
+footer { font-size: 14px; color: var(--ash); line-height: 1.8; }
+footer a { color: var(--gold); }
 @media (prefers-reduced-motion: reduce) { .pin.on i { animation: none; } .layer { transition: none !important; } }
 
 /* ---- breites Layout, Kopfleiste, Ladebildschirm ---- */
@@ -203,7 +203,7 @@ section[id] { scroll-margin-top: 84px; }
 .ld-fill { height: 100%; width: 0; background: repeating-linear-gradient(90deg, #ff9a3c 0 6px, #f2c45a 6px 12px); box-shadow: 0 0 12px rgba(255,154,60,.7); position: relative; overflow: hidden; }
 .ld-fill span { position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent); transform: translateX(-100%); animation: ldShine 1.4s linear infinite; }
 .ld-bar em { position: absolute; right: 0; top: calc(100% + 8px); font: normal 12px/1 "Pixelify Sans", monospace; color: #9fae9f; letter-spacing: .1em; }
-.ld-tip { margin-top: 18px; max-width: 34ch; font: 15px/1.45 "Alegreya Sans", system-ui, sans-serif; color: #c9c2ae; min-height: 2.9em; transition: opacity .4s; text-shadow: 0 1px 2px #000; }
+.ld-tip { margin-top: 18px; max-width: 34ch; font: 15px/1.45 Carlito, system-ui, sans-serif; color: #c9c2ae; min-height: 2.9em; transition: opacity .4s; text-shadow: 0 1px 2px #000; }
 .ld-go { margin-top: 2px; font: 700 17px/1 "Pixelify Sans", "Courier New", monospace; letter-spacing: .14em; text-transform: uppercase; padding: 13px 22px; color: #1b0e04; background: #ff9a3c; border: 0; border-radius: 4px;
   box-shadow: 0 4px 0 #9a4a12, 0 0 0 3px #1b0e04, 0 0 30px rgba(255,154,60,.55); cursor: pointer; opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity .4s, transform .4s; }
 .ld-go:hover, .ld-go:focus-visible { background: #f2c45a; outline: none; }
@@ -811,7 +811,7 @@ JOBS.forEach(([n, d, s]) => { const j = el("div", "job"); const i = el("img"); i
 { const vt = STATE.votes[STATE.day] || STATE.votes[Math.max(...Object.keys(STATE.votes).map(Number).filter(d => d <= STATE.day))];
   if (vt) { $("votq").append(el("span", null, "Tag " + STATE.day + ": " + vt.q), el("small", null, "Schreib die Zahl in die Kommentare.")); vt.o.forEach((v, i) => $("vote").append(el("span", null, (i + 1) + " = " + v))); } }
 STATE.chronicle.slice().reverse().forEach(c => { const a = el("article"); a.append(el("span", "day", "Tag " + c.day), el("p", null, c.text)); $("chron").append(a); });
-$("foot").textContent = "Stand: " + STATE.updated + " · Die Wikinger-Insel ist eine tägliche Pixel-Art-Serie auf TikTok.";
+$("foot").append("Stand: " + STATE.updated + " · Die Wikinger-Insel ist eine tägliche Pixel-Art-Serie auf TikTok.", el("br"), Object.assign(el("a", null, "Impressum"), { href: "impressum.html" }), " · ", Object.assign(el("a", null, "Datenschutz"), { href: "datenschutz.html" }));
 
 home();
 addEventListener("resize", () => apply(false));
